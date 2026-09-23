@@ -13,8 +13,10 @@ One local LLM in VRAM. Everything else gets unloaded.
   <img src="docs/hero.svg" alt="GPU Guard — one local model in VRAM" width="100%">
 </p>
 
-**12 GB cards choke when two models sit in VRAM.**  
+**Consumer GPUs can run out of VRAM when several Ollama models stay loaded.**  
 GPU Guard talks to the Ollama CLI and unloads everything except the one model you want. It does not pull weights. It does not start a server. It does not send telemetry.
+
+If you also install the PyPI package gpu-memory-guard, both expose a gpu-guard command. Use a venv.
 
 <p align="center">
   <img src="docs/terminal.svg" alt="gpu-guard only example" width="86%">
