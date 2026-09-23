@@ -1,5 +1,7 @@
 # GPU Guard
 
+Ein lokales LLM im VRAM. Der Rest fliegt runter.
+
 <p align="center">
   <img src="docs/hero.jpg" alt="product photo" width="100%">
 </p>
