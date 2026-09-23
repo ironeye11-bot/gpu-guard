@@ -2,6 +2,9 @@
 
 Ein lokales LLM im VRAM. Der Rest fliegt runter.
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org/downloads/)
+
 <p align="center">
   <img src="docs/hero.jpg" alt="product photo" width="100%">
 </p>
@@ -31,7 +34,7 @@ gpu-guard ps
 gpu-guard only qwen2.5-coder:14b
 gpu-guard stop llama3.1:8b
 gpu-guard stop-all
-gpu-guard --json only qwen2.5-coder:14b
+gpu-guard only qwen2.5-coder:14b --json
 ```
 
 `only` **never loads** the target. If it is not already resident, the other models are still stopped and VRAM is free for *you* to load it.
