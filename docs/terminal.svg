@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="980" height="420" viewBox="0 0 980 420" role="img" aria-label="gpu-guard terminal">
+  <rect width="980" height="420" rx="16" fill="#0b1014"/>
+  <rect width="980" height="42" rx="16" fill="#151c22"/>
+  <circle cx="28" cy="21" r="7" fill="#ff5d6c"/>
+  <circle cx="52" cy="21" r="7" fill="#ffcc66"/>
+  <circle cx="76" cy="21" r="7" fill="#3dffc2"/>
+  <text x="110" y="27" fill="#8aa0a6" font-family="ui-monospace, Menlo, Consolas, monospace" font-size="14">gpu-guard — local VRAM</text>
+  <text x="28" y="88" fill="#7af0ff" font-family="ui-monospace, Menlo, Consolas, monospace" font-size="18">$ gpu-guard ps</text>
+  <text x="28" y="122" fill="#e8f6f4" font-family="ui-monospace, Menlo, Consolas, monospace" font-size="18">MODEL                 SIZE</text>
+  <text x="28" y="152" fill="#3dffc2" font-family="ui-monospace, Menlo, Consolas, monospace" font-size="18">qwen2.5-coder:14b     14b</text>
+  <text x="28" y="182" fill="#ff8a96" font-family="ui-monospace, Menlo, Consolas, monospace" font-size="18">llama3.1:8b           8b</text>
+  <text x="28" y="230" fill="#7af0ff" font-family="ui-monospace, Menlo, Consolas, monospace" font-size="18">$ gpu-guard only qwen2.5-coder:14b</text>
+  <text x="28" y="264" fill="#e8f6f4" font-family="ui-monospace, Menlo, Consolas, monospace" font-size="18">target          qwen2.5-coder:14b</text>
+  <text x="28" y="294" fill="#e8f6f4" font-family="ui-monospace, Menlo, Consolas, monospace" font-size="18">stopped         llama3.1:8b</text>
+  <text x="28" y="324" fill="#3dffc2" font-family="ui-monospace, Menlo, Consolas, monospace" font-size="18">still in VRAM   qwen2.5-coder:14b</text>
+  <text x="28" y="372" fill="#8aa0a6" font-family="ui-monospace, Menlo, Consolas, monospace" font-size="16">12 GB card stays usable. Nothing is pulled. Nothing is uploaded.</text>
+</svg>
