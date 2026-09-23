@@ -11,7 +11,7 @@ from gpu_guard.ollama import (
     stop_model,
 )
 
-__version__ = "1.0.0"
+__version__ = "1.0.1"
 __all__ = [
     "GpuGuardError",
     "OllamaDown",

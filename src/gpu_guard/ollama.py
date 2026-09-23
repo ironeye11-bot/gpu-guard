@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import os
+import re
 import subprocess
 from dataclasses import dataclass
 from typing import Callable, Sequence
@@ -21,6 +22,12 @@ class StopFailed(GpuGuardError):
 
 
 Runner = Callable[[Sequence[str], float], subprocess.CompletedProcess[str]]
+
+# Longest marks first so 18b is not mistaken for 8b, 1.5b before 5b, etc.
+_SIZE_RE = re.compile(
+    r"(?<![0-9.])(72b|70b|32b|27b|18b|14b|8b|7b|3b|1\.5b)(?![0-9a-z])",
+    re.IGNORECASE,
+)
 
 
 def _binary() -> str:
@@ -44,11 +51,8 @@ def _default_runner(args: Sequence[str], timeout: float) -> subprocess.Completed
 
 def classify_size(name: str) -> str:
     """Cheap size hint from a model tag. Used only for display."""
-    lowered = name.lower()
-    for mark in ("70b", "32b", "27b", "14b", "8b", "7b", "3b", "1.5b"):
-        if mark in lowered:
-            return mark
-    return "unknown"
+    match = _SIZE_RE.search(name or "")
+    return match.group(1).lower() if match else "unknown"
 
 
 def parse_ps(stdout: str) -> list[str]:

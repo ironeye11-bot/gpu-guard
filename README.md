@@ -1,6 +1,6 @@
 # GPU Guard
 
-Ein lokales LLM im VRAM. Der Rest fliegt runter.
+One local LLM in VRAM. Everything else gets unloaded.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org/downloads/)
@@ -35,6 +35,7 @@ gpu-guard only qwen2.5-coder:14b
 gpu-guard stop llama3.1:8b
 gpu-guard stop-all
 gpu-guard only qwen2.5-coder:14b --json
+gpu-guard --json ps
 ```
 
 `only` **never loads** the target. If it is not already resident, the other models are still stopped and VRAM is free for *you* to load it.
@@ -55,7 +56,7 @@ Local coding agents stack a 14B and an 8B “just in case”. On a 3060 / 4060 /
 ## Tests
 
 ```bash
-python -m unittest discover -s tests -v
+python3 -m unittest discover -s tests -v
 ```
 
 ## License

@@ -4,6 +4,7 @@ import subprocess
 import unittest
 from typing import Sequence
 
+from gpu_guard.cli import main as cli_main
 from gpu_guard.ollama import (
     OllamaDown,
     StopFailed,
@@ -52,6 +53,49 @@ class ParseTests(unittest.TestCase):
         self.assertEqual(classify_size("qwen2.5-coder:14b"), "14b")
         self.assertEqual(classify_size("llama3.1:8b"), "8b")
         self.assertEqual(classify_size("custom"), "unknown")
+
+    def test_classify_size_no_false_positive_18b(self) -> None:
+        """18b must not match the 8b substring."""
+        self.assertEqual(classify_size("foo:18b"), "18b")
+        self.assertEqual(classify_size("model-18b-instruct"), "18b")
+
+    def test_classify_size_matrix(self) -> None:
+        cases = {
+            "qwen2.5-coder:14b": "14b",
+            "llama3.1:8b": "8b",
+            "foo:18b": "18b",
+            "bar:72b": "72b",
+            "x:1.5b": "1.5b",
+            "custom": "unknown",
+            "qwen:32b": "32b",
+            "model:70b": "70b",
+            "mistral:7b": "7b",
+            "phi:3b": "3b",
+        }
+        for name, expected in cases.items():
+            with self.subTest(name=name):
+                self.assertEqual(classify_size(name), expected)
+
+
+class CliJsonTests(unittest.TestCase):
+    def test_json_after_subcommand_is_accepted(self) -> None:
+        # argparse only — must not SystemExit(2) for unrecognized --json
+        with self.assertRaises(SystemExit) as ctx:
+            # --help exits 0; use parse via main with --help on only
+            cli_main(["only", "--help"])
+        self.assertEqual(ctx.exception.code, 0)
+
+    def test_json_flag_in_help_for_only(self) -> None:
+        import io
+        from contextlib import redirect_stdout
+
+        buf = io.StringIO()
+        with redirect_stdout(buf):
+            try:
+                cli_main(["only", "--help"])
+            except SystemExit:
+                pass
+        self.assertIn("--json", buf.getvalue())
 
 
 class GuardTests(unittest.TestCase):

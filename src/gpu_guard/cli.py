@@ -27,21 +27,33 @@ def _print_models(models: list[str]) -> None:
         print(f"{name.ljust(width)}  {classify_size(name)}")
 
 
+def _add_json_flag(parser: argparse.ArgumentParser) -> None:
+    parser.add_argument("--json", action="store_true", help="machine-readable output")
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(
         prog="gpu-guard",
         description="Keep one local LLM in VRAM. Stop the rest.",
     )
     parser.add_argument("--version", action="version", version=f"gpu-guard {__version__}")
-    parser.add_argument("--json", action="store_true", help="machine-readable output")
+    # Global --json (before subcommand): gpu-guard --json only model
+    _add_json_flag(parser)
     sub = parser.add_subparsers(dest="cmd", required=True)
 
-    sub.add_parser("ps", help="list models currently in VRAM")
+    ps = sub.add_parser("ps", help="list models currently in VRAM")
+    _add_json_flag(ps)
+
     only = sub.add_parser("only", help="stop every model except this one")
     only.add_argument("model", help="model tag, e.g. qwen2.5-coder:14b")
+    _add_json_flag(only)
+
     stop = sub.add_parser("stop", help="stop one loaded model")
     stop.add_argument("model")
-    sub.add_parser("stop-all", help="unload every model")
+    _add_json_flag(stop)
+
+    stop_all_p = sub.add_parser("stop-all", help="unload every model")
+    _add_json_flag(stop_all_p)
 
     args = parser.parse_args(argv)
     try:
