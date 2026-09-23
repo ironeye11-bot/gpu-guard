@@ -51,7 +51,7 @@ ensure_only("qwen2.5-coder:14b")
 
 ## Why this exists
 
-Local coding agents stack a 14B and an 8B “just in case”. On a 3060 / 4060 / 4070 laptop that is a freeze, not a feature. One command, one occupant.
+Local coding agents stack a 14B and an 8B “just in case”. On a 3060 / 4060 / 4070 laptop that often means a hung session, not a feature. One command, one occupant.
 
 ## Tests
 

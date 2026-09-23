@@ -98,6 +98,37 @@ class CliJsonTests(unittest.TestCase):
         self.assertIn("--json", buf.getvalue())
 
 
+    def test_json_before_and_after_subcommand(self) -> None:
+        """Both `gpu-guard --json only x` and `gpu-guard only x --json` must emit JSON."""
+        import io
+        from contextlib import redirect_stdout, redirect_stderr
+        from gpu_guard import ollama
+
+        class Fake:
+            def __call__(self, args: Sequence[str], timeout: float) -> subprocess.CompletedProcess[str]:
+                cmd = list(args)
+                if cmd[1] == "ps":
+                    return subprocess.CompletedProcess(cmd, 0, "NAME\n", "")
+                if cmd[1] == "stop":
+                    return subprocess.CompletedProcess(cmd, 0, "", "")
+                return subprocess.CompletedProcess(cmd, 1, "", "unknown")
+
+        original = ollama._default_runner
+        ollama._default_runner = Fake()
+        try:
+            for argv in (["only", "x", "--json"], ["--json", "only", "x"]):
+                buf = io.StringIO()
+                err = io.StringIO()
+                with redirect_stdout(buf), redirect_stderr(err):
+                    code = cli_main(argv)
+                self.assertEqual(code, 0, argv)
+                out = buf.getvalue()
+                self.assertIn('"target"', out, argv)
+                self.assertIn('"stopped"', out, argv)
+                self.assertNotIn("was loaded", out, argv)
+        finally:
+            ollama._default_runner = original
+
 class GuardTests(unittest.TestCase):
     def test_ensure_only_stops_the_other_model(self) -> None:
         runner = FakeRunner()

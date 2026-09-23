@@ -13,5 +13,5 @@
   <text x="28" y="264" fill="#e8f6f4" font-family="ui-monospace, Menlo, Consolas, monospace" font-size="18">target          qwen2.5-coder:14b</text>
   <text x="28" y="294" fill="#e8f6f4" font-family="ui-monospace, Menlo, Consolas, monospace" font-size="18">stopped         llama3.1:8b</text>
   <text x="28" y="324" fill="#3dffc2" font-family="ui-monospace, Menlo, Consolas, monospace" font-size="18">still in VRAM   qwen2.5-coder:14b</text>
-  <text x="28" y="372" fill="#8aa0a6" font-family="ui-monospace, Menlo, Consolas, monospace" font-size="16">12 GB card stays usable. Nothing is pulled. Nothing is uploaded.</text>
+  <text x="28" y="372" fill="#8aa0a6" font-family="ui-monospace, Menlo, Consolas, monospace" font-size="16">Keeps one occupant. Nothing is pulled. Nothing is uploaded.</text>
 </svg>

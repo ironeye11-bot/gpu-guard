@@ -28,7 +28,17 @@ def _print_models(models: list[str]) -> None:
 
 
 def _add_json_flag(parser: argparse.ArgumentParser) -> None:
-    parser.add_argument("--json", action="store_true", help="machine-readable output")
+    # SUPPRESS so a global --json is not wiped by the subparser default False.
+    parser.add_argument(
+        "--json",
+        action="store_true",
+        default=argparse.SUPPRESS,
+        help="machine-readable output",
+    )
+
+
+def _want_json(args: argparse.Namespace) -> bool:
+    return bool(getattr(args, "json", False))
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -59,14 +69,14 @@ def main(argv: list[str] | None = None) -> int:
     try:
         if args.cmd == "ps":
             models = loaded_models()
-            if args.json:
+            if _want_json(args):
                 print(json.dumps({"loaded": models}, indent=2))
             else:
                 _print_models(models)
             return 0
         if args.cmd == "only":
             result = ensure_only(args.model)
-            if args.json:
+            if _want_json(args):
                 print(json.dumps(result.as_dict(), indent=2))
             else:
                 print(f"target          {result.target}")
@@ -77,11 +87,11 @@ def main(argv: list[str] | None = None) -> int:
         if args.cmd == "stop":
             stop_model(args.model)
             payload = {"stopped": [args.model]}
-            print(json.dumps(payload, indent=2) if args.json else f"stopped {args.model}")
+            print(json.dumps(payload, indent=2) if _want_json(args) else f"stopped {args.model}")
             return 0
         if args.cmd == "stop-all":
             stopped = stop_all()
-            if args.json:
+            if _want_json(args):
                 print(json.dumps({"stopped": stopped}, indent=2))
             else:
                 print("stopped " + ", ".join(stopped) if stopped else "nothing loaded")
